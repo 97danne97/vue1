@@ -4,8 +4,8 @@ const Foo = window.httpVueLoader('js/components/Foo.vue')
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: Home },
-        { path: '/foo', component: Foo }
+        { path: '/vue1/', component: Home },
+        { path: '/vue1/foo', component: Foo }
     ]
 })
 
