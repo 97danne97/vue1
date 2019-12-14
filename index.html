@@ -3,17 +3,19 @@
 
 <head>
   <title>Vue</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://unpkg.com/vue"></script>
   <script src="https://npmcdn.com/vue-router/dist/vue-router.js"></script>
   <script src="https://unpkg.com/http-vue-loader"></script>
 </head>
 
   <div id="app">
-    <router-link to="/vue1/">Home</router-link>
-    <router-link to="/vue1/foo">Foo</router-link>
+    <router-link to="/">Home</router-link>
+    <router-link to="/message">Foo</router-link>
     <router-view></router-view>
   </div>
 
-  <script src="js/index.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
