@@ -18,11 +18,11 @@ module.exports = {
 <style>
 .fade-enter-active,
 .fade-leave-active {
-    transition: 0.1s ease;
+    transition: 0.2s ease;
 }
 
 .fade-enter-active {
-    transition-delay: 0.1s;
+    transition-delay: 0.2s;
     transform-origin: top left;
     height: 0;
 }
