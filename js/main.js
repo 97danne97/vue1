@@ -4,6 +4,7 @@ const Navbar = window.httpVueLoader('components/default/Navbar.vue')
 const Drawer = window.httpVueLoader('components/default/Drawer.vue')
 
 Vue.use(VueRouter)
+Vue.use(Vue2Filters)
 
 const router = new VueRouter({
     mode: 'history',
@@ -21,5 +22,5 @@ new Vue({
     components: {
         Main
     },
-    template: '<Main></Main>'
+    template: '<Main></Main>',
 })
