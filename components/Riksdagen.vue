@@ -1,15 +1,10 @@
 <template>
-    <div id="riksdag" class="col s12">
-        <div class="row">
-            <div class="input-field">
+    <div id="riksdag" class="section">
+        <div class="row col s12">
+            <div class="input-field col s12">
                 <i class="material-icons prefix">search</i>
-                <input
-                    placeholder="Sök efter ledamöter..."
-                    id="search"
-                    type="text"
-                    class="validate"
-                    v-model="search"
-                />
+                <input id="ledamot_search" type="text" class="validate" v-model="ledamot_search" />
+                <label for="ledamot_search" class>Sök efter ledamöter</label>
             </div>
         </div>
         <div class="row">
@@ -17,15 +12,21 @@
                 <li>
                     <div class="collapsible-header">
                         <i class="material-icons">filter_list</i>Filter
+                        <span
+                            class="new badge"
+                            data-badge-caption="aktiva"
+                            v-if="selected_parties.length > 0"
+                        >{{selected_parties.length}}</span>
                     </div>
                     <div class="collapsible-body">
-                        <h4>Filter</h4>
-                        <form>
+                        <h5>Filter</h5>
+                        <div class="divider"></div>
+                        <form class="section">
                             <li :key="index" v-for="(checkbox, index) in checkboxOptions">
                                 <label>
                                     <input
                                         type="checkbox"
-                                        v-model="selectedCategory"
+                                        v-model="selected_parties"
                                         :value="checkbox.parti"
                                     />
                                     <span>{{ checkbox.text }}</span>
@@ -38,7 +39,7 @@
         </div>
         <transition name="fade">
             <div v-if="response == false" class="row center">
-                <div class="preloader-wrapper big active">
+                <div class="preloader-wrapper medium active">
                     <div class="spinner-layer spinner-blue-only">
                         <div class="circle-clipper left">
                             <div class="circle"></div>
@@ -56,7 +57,12 @@
 
         <transition-group name="list" tag="div" class="row" id="ledamot-container">
             <div
-                v-for="ledamot in filterBy(filterItems, search, 'sorteringsnamn')"
+                v-for="ledamot in 
+                    limitBy( //begränsa på grund av prestandaproblem
+                        orderBy( //sortera och filtrera
+                            filterBy(filterItems, ledamot_search, 'sorteringsnamn'),
+                        'parti'),
+                    50)"
                 class="col s12 m6 l4 list-item"
                 v-bind:class="ledamot.parti"
                 v-bind:id="ledamot.intressent_id"
@@ -95,10 +101,11 @@ module.exports = {
                 { text: "Kristdemokraterna", parti: "KD" },
                 { text: "Moderaterna", parti: "M" },
                 { text: "Liberalerna", parti: "L" },
-                { text: "Centerpartiet", parti: "C" }
+                { text: "Centerpartiet", parti: "C" },
+                { text: "Avhoppare", parti: "-" }
             ],
-            selectedCategory: [],
-            search: ""
+            selected_parties: [],
+            ledamot_search: ""
         };
     },
     beforeCreate() {
@@ -119,15 +126,16 @@ module.exports = {
             });
     },
     methods: {
+        //Sorterar
         onResponse: function(res) {
-            this.data = res.data.personlista.person.splice(0, 50);
+            this.data = res.data.personlista.person.splice(0,50);
             this.response = true;
         }
     },
     computed: {
         filterItems: function() {
             var vm = this;
-            var category = vm.selectedCategory;
+            var category = vm.selected_parties;
 
             if (category.length < 1) {
                 return vm.data;
@@ -148,7 +156,8 @@ module.exports = {
 </script>
 
 <style scoped>
-#ledamot-container {
+#riksdag{
+    min-height: 100vh;
 }
 .ledamot > div {
     height: 150px;
@@ -159,14 +168,15 @@ module.exports = {
     object-fit: contain;
 }
 .list-item {
-  transition: all .3s cubic-bezier(0.865, 0.84, 0.24, 1);
+    /* övergång med anpassad hastighetsfördelning (cubic-bezier) */
+    transition: all 0.3s cubic-bezier(0.865, 0.84, 0.24, 1);
 }
-.list-enter, .list-leave-to
-/* .list-complete-leave-active below version 2.1.8 */ {
-  opacity: 0;
-  transform: translateY(30px);
+.list-enter,
+.list-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
 }
 .list-leave-active {
-  position: absolute;
+    position: absolute;
 }
 </style>
