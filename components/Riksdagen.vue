@@ -1,9 +1,9 @@
 <template>
-    <div id="riksdag" class="section">
+    <div id="riksdag" class="section container">
         <div class="row col s12">
             <div class="input-field col s12">
                 <i class="material-icons prefix">search</i>
-                <input id="ledamot_search" type="text" class="validate" v-model="ledamot_search" />
+                <input id="ledamot_search" type="text" v-model="ledamot_search" />
                 <label for="ledamot_search" class>Sök efter ledamöter</label>
             </div>
         </div>
@@ -63,24 +63,28 @@
                             filterBy(filterItems, ledamot_search, 'sorteringsnamn'),
                         'parti'),
                     50)"
-                class="col s12 m6 l4 list-item"
+                class="list-item col s12 m6 l4"
                 v-bind:class="ledamot.parti"
                 v-bind:id="ledamot.intressent_id"
                 :key="ledamot.intressent_id"
             >
-                <div class="col-content card hoverable ledamot">
-                    <div class="card-image">
-                        <img v-bind:src="ledamot.bild_url_192" alt="People" />
+                <div class="card medium hoverable">
+                    <div class="card-image z-depth-2">
+                        <img :src="ledamot.bild_url_192" />
                     </div>
                     <div class="card-content">
-                        <span class="card-title">
+                        <p class="card-title">
                             {{ledamot.tilltalsnamn}} {{ledamot.efternamn}}
                             <strong>({{ledamot.parti}})</strong>
-                        </span>
-                        <div class>{{ledamot.valkrets}}</div>
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <router-link
+                            :to="'/ledamot/'+ledamot.intressent_id+'/'"
+                            class="btn waves-effect blue"
+                        >Mer info</router-link>
                     </div>
                 </div>
-                <!-- Modal Structure -->
             </div>
         </transition-group>
     </div>
@@ -89,10 +93,9 @@
 <script>
 module.exports = {
     mixins: [Vue2Filters.mixin],
+    props: ["data", "response"],
     data: function() {
         return {
-            data: "",
-            response: false,
             checkboxOptions: [
                 { text: "Miljöpartiet", parti: "MP" },
                 { text: "Sverigedemokraterna", parti: "SD" },
@@ -105,7 +108,8 @@ module.exports = {
                 { text: "Avhoppare", parti: "-" }
             ],
             selected_parties: [],
-            ledamot_search: ""
+            ledamot_search: "",
+            selected_ledamot: ""
         };
     },
     beforeCreate() {
@@ -113,24 +117,6 @@ module.exports = {
             //Instans av kollaps-element från MaterializeCSS. Används just nu för att gömma/dölja sökfilterna
             $(".collapsible").collapsible();
         });
-        $(document).ready(function() {
-            $(".modal").modal();
-        });
-    },
-    mounted() {
-        //GET-request till API, lagrar svar i info
-        axios
-            .get("https://data.riksdagen.se/personlista/?utformat=json")
-            .then(res => {
-                this.onResponse(res); // Kallar på onResponse vid svar från API
-            });
-    },
-    methods: {
-        //Sorterar
-        onResponse: function(res) {
-            this.data = res.data.personlista.person.splice(0,50);
-            this.response = true;
-        }
     },
     computed: {
         filterItems: function() {
@@ -156,16 +142,23 @@ module.exports = {
 </script>
 
 <style scoped>
-#riksdag{
-    min-height: 100vh;
-}
-.ledamot > div {
-    height: 150px;
+.list-item .card-image {
+    height: 200px;
+    top: 15px;
+    margin: auto;
+    width: 200px;
+    overflow: visible;
 }
 
-.ledamot > div > img {
-    height: 150px;
-    object-fit: contain;
+.list-item .card-image > img {
+    object-fit: cover;
+    object-position: top;
+    height: 200px;
+}
+
+.list-item > .card {
+    border-radius: 5px;
+    overflow: hidden;
 }
 .list-item {
     /* övergång med anpassad hastighetsfördelning (cubic-bezier) */
