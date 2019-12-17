@@ -1,8 +1,8 @@
 <template>
     <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper">
-                <a href="#" data-target="sidenav-1" class="sidenav-trigger left">
+            <div class="nav-wrapper blue">
+                <a href="#" data-target="sidenav-1" class="sidenav-trigger">
                     <i class="material-icons">menu</i>
                 </a>
                 <router-link tag="a" class="brand-logo" to="/">Politiknörden</router-link>
@@ -18,9 +18,6 @@
 
 <script>
 module.exports = {
-    components: {
-        Drawer
-    },
     mounted() {
         //jQuery för att skapa sidenav-instans
         $(document).ready(function() {
