@@ -5,17 +5,21 @@
         <transition name="fade">
             <router-view tag="div" class="container"></router-view>
         </transition>
+        <Footer1></Footer1>
     </div>
 </template>
 <script>
 module.exports = {
     components: {
         Navbar,
-        Drawer
+        Drawer,
+        Footer1
     }
 };
 </script>
-<style>
+<style scoped>
+
+/* fade-animation för element i <transition>-taggar (router-views) */
 .fade-enter-active,
 .fade-leave-active {
     transition: 0.2s ease;
