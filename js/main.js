@@ -25,7 +25,7 @@ const router = new VueRouter({
             ] */
         },
         {
-            path: '/ledamot/:id',
+            path: '/riksdagen/ledamot/:id',
             component:Ledamot
         }
         
