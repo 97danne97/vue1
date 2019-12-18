@@ -80,8 +80,8 @@
                     </div>
                     <div class="card-action">
                         <router-link
-                            :to="'/ledamot/'+ledamot.intressent_id+'/'"
-                            class="btn waves-effect blue"
+                            :to="'/riksdagen/ledamot/'+ledamot.intressent_id+'/'"
+                            class="btn waves-effect brown lighten-1"
                         >Mer info</router-link>
                     </div>
                 </div>
