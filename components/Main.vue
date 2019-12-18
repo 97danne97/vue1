@@ -49,48 +49,48 @@ module.exports = {
     overflow-x: hidden;
 }
 #main-content{
-    min-height: 100vh;
+    height: 100%; /*För att sidan inte ska hoppa vid övergångar*/
 }
 
-/* fade-animation för element i <transition>-taggar (router-views) */
+/* fade-övergång för routade element i <transition>-taggar (router-views) */
 .slide-right-enter-active,
 .slide-right-leave-active {
-    transition: 0.2s ease;
+    transition: 0.3s cubic-bezier(0.19, 1, 0.62, 1);
 }
 
 .slide-right-enter-active {
-    transition-delay: 0.2s;
+    transition-delay: 0.3s;
     height: 0;
 }
 
 .slide-right-enter {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateX(-300px);
 }
 .slide-right-leave-active {
+    transform: translateX(300px);
     opacity: 0;
-    transform: translateX(100px);
     height: 0;
 }
 
 /* fade-animation för element i <transition>-taggar (router-views) */
 .slide-left-enter-active,
 .slide-left-leave-active {
-    transition: 0.2s ease;
+    transition: 0.3s cubic-bezier(0.19, 1, 0.62, 1);
 }
 
 .slide-left-enter-active {
-    transition-delay: 0.2s;
+    transition-delay: 0.3s;
     height: 0;
 }
 
 .slide-left-enter {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateX(300px);
 }
 .slide-left-leave-active {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateX(-300px);
     height: 0;
 }
 </style>
